@@ -1,10 +1,12 @@
-import { Alert } from "./components/Alert";
+import { Button } from "./components/button";
+const handleClick = () => {
+  console.log("button clicked");
+};
+
 function App() {
   return (
     <div>
-      <Alert>
-        Hello From <b>Applab</b>
-      </Alert>
+      <Button onClick={handleClick}>Click Me!</Button>
     </div>
   );
 }
