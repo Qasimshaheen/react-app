@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Alert } from "./components/Alert";
-import { Button } from "./components/button";
+import { Button } from "./components/Button/Button";
 
 const handleClick = () => {
   console.log("clicked");
