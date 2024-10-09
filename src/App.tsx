@@ -1,18 +1,10 @@
-import ListGroup from "./components/ListGroup";
-
+import { Alert } from "./components/Alert";
 function App() {
-  let cities = ["New Yourk", "San Francisco", "London", "Paris"];
-  let colors = ["Red", "Green", "Blue", "Purple"];
-  const handleSelectItem = (item: string) => {
-    console.log(item);
-  };
   return (
     <div>
-      <ListGroup
-        items={cities}
-        heading="Cities"
-        onSelectItem={handleSelectItem}
-      />
+      <Alert>
+        Hello From <b>Applab</b>
+      </Alert>
     </div>
   );
 }
