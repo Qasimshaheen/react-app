@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import { useForm, FieldValues } from "react-hook-form";
-import { z } from "zod";
+import { isValid, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
@@ -14,7 +14,7 @@ export const Form = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: FieldValues) => console.log(data);
@@ -45,7 +45,11 @@ export const Form = () => {
         />
         {errors.age && <p className="text-danger">{errors.age.message}</p>}
       </div>
-      <button type="submit" className="btn btn-primary mt-2">
+      <button
+        disabled={!isValid}
+        type="submit"
+        className="btn btn-primary mt-2"
+      >
         Submit
       </button>
     </form>
