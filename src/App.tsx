@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ExpenseList } from "./expense-tracker/components/ExpenseList";
-import { ExpenseFilter } from "./expense-tracker/ExpenseFilter";
+import { ExpenseFilter } from "./expense-tracker/components/ExpenseFilter";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
