@@ -1,24 +1,17 @@
-import apiClient, { CanceledError } from "./services/api-Client";
+import { CanceledError } from "./services/api-client";
 import { useEffect, useState } from "react";
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-}
+import userService, { User } from "./services/user-service";
+
 function App() {
   const [error, setError] = useState("");
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController();
     setLoading(true);
 
-    apiClient
-      .get<User[]>("/users", {
-        signal: controller.signal,
-      })
+    const { request, cancel } = userService.getAllUsers();
+    request
       .then((res) => {
         setUsers(res.data);
         setLoading(false);
@@ -28,18 +21,15 @@ function App() {
         setError(err.message);
         setLoading(false);
       });
-    // .finally(() => {
-    //   setLoading(false);
-    // });
 
-    return () => controller.abort();
+    return () => cancel();
   }, []);
 
   const deleteUser = (user: User) => {
     const originalUsers = [...users];
     setUsers(users.filter((u) => u.id !== user.id));
 
-    apiClient.delete("/users/" + user.id).catch((err) => {
+    userService.deleteUser(user.id).catch((err) => {
       setError(err.message);
       setUsers(originalUsers);
     });
@@ -55,8 +45,8 @@ function App() {
     };
     setUsers([newUser, ...users]);
 
-    apiClient
-      .post("/users", newUser)
+    userService
+      .addUser(newUser)
       .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
       .catch((err) => {
         setError(err.message);
@@ -69,7 +59,7 @@ function App() {
     const updatedUser = { ...user, name: user.name + "!" };
     setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 
-    apiClient.patch("/users/" + user.id, updatedUser).catch((err) => {
+    userService.updateUser(updatedUser).catch((err) => {
       setError(err.message);
       setUsers(originalUsers);
     });
